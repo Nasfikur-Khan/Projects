@@ -1,0 +1,152 @@
+//Main Class:
+
+package finalproject;
+import java.util.Arrays;
+public class MainClass {
+	public static void main(String [] args) {
+		// TODO Auto-generated method stub
+		TakingInput mainclasstakinginput = new TakingInput();
+		String email = mainclasstakinginput.takinginput();
+		System.out.println( "The Email Address That You Entered Is: \n" + email + "\n" );
+		
+		int result;
+		CountingEveryCharacter mainclasscountingeverycharacter = new CountingEveryCharacter();
+		result = mainclasscountingeverycharacter.countingeverycharacter(email);
+		
+		PrintingResult mainclassprintingresult = new PrintingResult();
+		mainclassprintingresult.printingresult( result );
+	}
+}
+
+//Taking Input [Class]:
+
+package finalproject;
+import java.util.Scanner;
+public class TakingInput {
+	String email;
+	public String takinginput() {
+		System.out.println( "Enter An Email Address: " );
+		Scanner input = new Scanner ( System.in );
+		email = input.nextLine();
+		System.out.println();
+		return email;
+	}
+}
+
+//Counting Every Character & Storing Data [Class]:
+
+package finalproject;
+import java.util.Arrays;
+public class CountingEveryCharacter {
+	public static int countingeverycharacter( String email ) {
+		int l = email.length();
+		int alphabetwholepart = 0;
+		int alphabetsecondpart = 0;
+		int digit = 0;
+	
+		int a = 0;
+		int dotwholepart = 0;
+		int dotwholepartindex [] = new int [l];
+		
+		int b = 0;
+		int dot2ndpart = 0;
+		int dot2ndpartindex [] = new int [l];
+		
+		int c = 0;
+		int underscore = 0;
+		int underscoreindex [] = new int [l];
+		
+		int at = 0;
+		int atindex = 0;
+		
+		for ( int i = 0; i < l; i++ ) {		
+			if ( (  email.charAt(i) >= 'a' ) && ( email.charAt(i) <= 'z' ) )
+				alphabetwholepart++;
+			else if ( (  email.charAt(i) >= '0' ) && ( email.charAt(i) <= '9' ) )
+				digit++;
+			else if ( (  email.charAt(i) ) == ( '.' ) ) {
+				dotwholepart++;
+				dotwholepartindex [a] = i;
+				a++;
+			}
+			
+			else if ( (  email.charAt(i) ) == ( '_' ) ) {
+				underscore++;
+				underscoreindex [c] = i;
+				c++;
+			}
+			else if ( (  email.charAt(i) ) == ( '@' ) ) {
+				at++;
+				atindex = i;
+			}		
+		}
+		
+		for ( int j = ( atindex + 1 ); j < l; j++ ) {	
+			if ( ( (  email.charAt(j) ) >= ( 'a' ) ) && ( ( email.charAt(j) <= ( 'z' ) ) ) )
+				alphabetsecondpart++;
+			else if ( (  email.charAt(j) ) == ( '.' ) ) {
+				dot2ndpart++;
+				dot2ndpartindex [b] = j;
+				b++;
+			}
+		}
+		
+		int result;
+		result = Evaluate.evaluating( email, l, alphabetwholepart, alphabetsecondpart, digit, a, dotwholepart, dotwholepartindex, b, dot2ndpart, dot2ndpartindex, c, underscore, underscoreindex, at, atindex );
+		return result;	
+	}
+}
+
+//Processing & Evaluating [Class]:
+
+package finalproject;
+import java.util.Arrays;
+public class Evaluate {
+	public static int evaluating( String email, int l, int alphabetwholepart, int alphabetsecondpart, int digit, int a, int dotwholepart, int dotwholepartindex [], int b, int dot2ndpart, int dot2ndpartindex [], int c, int underscore, int underscoreindex [], int at, int atindex ) {
+		int v = 1;
+		int inv = 0;
+		for ( int i = 0; i < ( a - 1 ); i++ ) {
+			if ( ( ( dotwholepartindex [ i + 1 ] ) - ( dotwholepartindex [i] ) ) == 1 ) 
+				return inv;
+		}
+		
+		for ( int j = 0; j < ( c - 1 ); j++ ) {
+			if ( ( ( underscoreindex [ j + 1 ] ) - ( underscoreindex [j] ) ) == 1 ) 
+				return inv;
+		}
+		
+		if ( ( alphabetwholepart + digit + dotwholepart + underscore + at ) != l )
+			return inv;
+		
+		else if ( ( (  email.charAt(0) ) < ( 'a' ) ) || ( ( email.charAt(0) > ( 'z' ) ) ) )
+			return inv;
+		
+		else if ( at > 1 )
+			return inv;
+		
+		else if ( ( atindex - 0 ) == 0 )
+			return inv;
+		
+		else if ( ( alphabetsecondpart + dot2ndpart ) != ( l - ( atindex + 1 ) ) )
+			return inv;
+		
+		else if ( ( ( email.charAt(l-1) ) < 'a' ) || ( ( email.charAt(l-1) ) > 'z' ) )
+			return inv;
+		
+		else
+			return v;			
+	}
+}
+
+//Printing Result [Class]:
+
+package finalproject;
+public class PrintingResult {
+	void printingresult ( int result ) {
+		System.out.println( "The Email Address Validation Result Is: \n" );
+		if ( result == 1 )
+			System.out.println( " ¥ ¥ [ This Email Address Is Valid ] ¥ ¥ ");
+		else
+			System.out.println( " ¥ ¥ [ This Email Address Is Invalid ] ¥ ¥ ");
+	}
+}
