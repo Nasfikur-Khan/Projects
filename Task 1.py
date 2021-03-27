@@ -1,7 +1,7 @@
 #Import Pandas and matplotlib
 
 import pandas as pd
-import matplotlibe.pyplot as plt
+import matplotlib.pyplot as plt
 
 #Create the dataframesusing the json file
 df = pd.read_json(r'/rain,json')
